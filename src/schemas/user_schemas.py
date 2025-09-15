@@ -23,8 +23,9 @@ class UserCreate(BaseModel):
 
 
 class UserResponse(BaseModel):
+    id: str
     name: str
-    birthday: date
+    age: int
     email: EmailStr
     password: str
     phone: str
