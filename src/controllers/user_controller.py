@@ -30,3 +30,7 @@ def get_users_paginated(
         order_by=order_by,
         order_dir=order_dir
     )
+
+@router.get("/{id}", response_model=UserResponse, status_code=HTTPStatus.OK)
+def get_by_id(id: str, db: Session = Depends(get_session)):
+    return UserService(db).get_by_id(id)
