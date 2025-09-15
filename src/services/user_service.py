@@ -54,7 +54,7 @@ class UserService:
         )
         
         user_responses = [
-            UserResponse.model_validate(user, from_attributes=True) 
+            self.__to_response(user) 
             for user in users
         ]
         
