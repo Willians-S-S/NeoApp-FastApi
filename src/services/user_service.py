@@ -59,6 +59,13 @@ class UserService:
             page=pagination.page,
             size=pagination.size
         )
+    
+    def get_by_id(self, id: str) -> UserResponse:
+        user = self.__repository.get_by_id(id)
+        if user is None:
+            raise HTTPException(HTTPStatus.NOT_FOUND, not_found.USER_NOT_FOUND)
+        
+        return self.__to_response(user=user)
         
     def __to_UseModel(self, user_create: UserCreate) -> UserModel:
         now = datetime.now(timezone.utc)
