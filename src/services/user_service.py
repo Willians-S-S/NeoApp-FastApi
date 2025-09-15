@@ -66,6 +66,26 @@ class UserService:
             raise HTTPException(HTTPStatus.NOT_FOUND, not_found.USER_NOT_FOUND)
         
         return self.__to_response(user=user)
+    
+    def get_user_with_attributes(
+            self,
+            name: Optional[str] = None,
+            email: Optional[str] = None,
+            cpf: Optional[str] = None,
+            phone: Optional[str] = None,
+            birthday: Optional[date] = None,
+    ) -> UserResponse:
+        user = self.__repository.get_user_with_attributes(
+            name=name,
+            email=email,
+            cpf=cpf,
+            phone=phone,
+            birthday=birthday)
+        
+        if user is None:
+            raise HTTPException(HTTPStatus.NOT_FOUND, not_found.USER_NOT_FOUND)
+        
+        return self.__to_response(user)
         
     def __to_UseModel(self, user_create: UserCreate) -> UserModel:
         now = datetime.now(timezone.utc)

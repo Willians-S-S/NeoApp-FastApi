@@ -1,3 +1,4 @@
+from datetime import date
 from fastapi import APIRouter, Depends, Query
 from fastapi.responses import JSONResponse
 from http import HTTPStatus
@@ -30,6 +31,22 @@ def get_users_paginated(
         order_by=order_by,
         order_dir=order_dir
     )
+
+@router.get("/attributes", response_model=UserResponse, status_code=HTTPStatus.OK)
+def get_user_with_attributes(
+            name: Optional[str] = None,
+            email: Optional[str] = None,
+            cpf: Optional[str] = None,
+            phone: Optional[str] = None,
+            birthday: Optional[date] = None,
+            db: Session = Depends(get_session)
+    ):
+        return UserService(db).get_user_with_attributes(
+            name=name,
+            email=email,
+            cpf=cpf,
+            phone=phone,
+            birthday=birthday)
 
 @router.get("/{id}", response_model=UserResponse, status_code=HTTPStatus.OK)
 def get_by_id(id: str, db: Session = Depends(get_session)):

@@ -1,8 +1,9 @@
+from datetime import date
 from fastapi import HTTPException
 from http import HTTPStatus
 
 from typing import Optional, List
-from sqlalchemy import asc, desc, select
+from sqlalchemy import asc, desc, select, and_
 from sqlalchemy.orm import Session
 
 from db.models.user_models import UserModel
@@ -60,7 +61,32 @@ class UserRepository:
         users = query.offset(offset).limit(limit).all()
         
         return users, total
-    
+
+    def get_user_with_attributes(
+            self,
+            name: Optional[str] = None,
+            email: Optional[str] = None,
+            cpf: Optional[str] = None,
+            phone: Optional[str] = None,
+            birthday: Optional[date] = None,
+    ) -> UserModel:
+        
+        conditions = []
+        if name:
+            conditions.append(UserModel.name == name)
+        if email:
+            conditions.append(UserModel.email == email)
+        if cpf:
+            conditions.append(UserModel.cpf == cpf)
+        if phone:
+            conditions.append(UserModel.phone == phone)
+        if birthday:
+            conditions.append(UserModel.birthday == birthday)
+
+        stmt = select(UserModel).where(and_(*conditions)).limit(1)
+
+        return self.__session.execute(stmt).scalar_one_or_none()
+        
     def delete(self, user: UserModel) -> None:
         try:
             self.__session.delete(user)
