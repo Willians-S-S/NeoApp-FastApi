@@ -1461,6 +1461,17 @@ docs = ["Sphinx (>=4.1.2,<4.2.0)", "sphinx-rtd-theme (>=0.5.2,<0.6.0)", "sphinxc
 test = ["aiohttp (>=3.10.5)", "flake8 (>=5.0,<6.0)", "mypy (>=0.800)", "psutil", "pyOpenSSL (>=23.0.0,<23.1.0)", "pycodestyle (>=2.9.0,<2.10.0)"]
 
 [[package]]
+name = "validate-docbr"
+version = "1.11.1"
+description = "Validate brazilian documents."
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "validate_docbr-1.11.1-py3-none-any.whl", hash = "sha256:dcd58ba672f0661f387515e42a26e9fc201b437498b9de7e96369a7e9563f36c"},
+]
+
+[[package]]
 name = "watchfiles"
 version = "1.1.0"
 description = "Simple, modern and high performance file watching and code reload in python."
@@ -1661,4 +1672,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13"
-content-hash = "ef90ba1aa098d005fb72a18d459b16276c481f3bc5347d275b3f73bb46e31764"
+content-hash = "1f0bcc23d98b36f666e3571b0edd0737830eb9369cbd02e1d5fe197406954986"
