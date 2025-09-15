@@ -13,6 +13,15 @@ class UserCreate(BaseModel):
     phone: str = Field()
     cpf: str = Field(min_length=11, max_length=11)
 
+    @field_validator("cpf")
+    def validate_cpf(cls, cpf: str):
+    
+        if not CPF().validate(cpf):
+            raise HTTPException(HTTPStatus.UNPROCESSABLE_ENTITY, "CPF inválado.")
+        
+        return cpf
+
+
 class UserRespose(BaseModel):
     name: str
     birthday: date
