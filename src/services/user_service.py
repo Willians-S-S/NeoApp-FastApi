@@ -1,11 +1,12 @@
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
+from dateutil.relativedelta import relativedelta
 from fastapi import HTTPException
 from http import HTTPStatus
 from sqlalchemy.orm import Session
 from typing import Optional
 from uuid import uuid4
 
-from core.errors import conflict
+from core.errors import conflict, not_found
 from db.models.user_models import UserModel
 from schemas.user_schemas import UserCreate, UserResponse
 from schemas.page_schemas import PageResponse, PaginationParams
@@ -36,7 +37,7 @@ class UserService:
         
         user_save = self.__repository.save(user_save)
 
-        return UserResponse.model_validate(user_save, from_attributes=True)
+        return self.__to_response(user_save)
     
     def get_paginated(
         self, 
@@ -63,4 +64,18 @@ class UserService:
             page=pagination.page,
             size=pagination.size
         )
+    
+    def __to_response(self, user: UserModel) -> UserResponse:
+        age = relativedelta(date.today(), user.birthday).years
 
+        return UserResponse(
+            id=user.id,
+            name=user.name,
+            age=age,
+            email=user.email,
+            password=user.password,
+            phone=user.phone,
+            cpf=user.cpf,
+            creat_at=user.creat_at,
+            update_at=user.update_at
+            )
