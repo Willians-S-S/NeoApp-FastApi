@@ -65,6 +65,16 @@ class UserService:
             size=pagination.size
         )
     
+    def __to_UseModel(self, user_create: UserCreate) -> UserModel:
+        now = datetime.now(timezone.utc)
+        
+        return UserModel(
+            id=str(uuid4()), 
+            **user_create.model_dump(), 
+            creat_at=now,
+            update_at=now)
+
+    
     def __to_response(self, user: UserModel) -> UserResponse:
         age = relativedelta(date.today(), user.birthday).years
 
