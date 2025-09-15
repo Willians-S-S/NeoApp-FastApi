@@ -1,7 +1,8 @@
 from fastapi import HTTPException
 from http import HTTPStatus
 
-from sqlalchemy import select
+from typing import Optional, List
+from sqlalchemy import asc, desc, select
 from sqlalchemy.orm import Session
 
 from db.models.user_models import UserModel
@@ -35,6 +36,30 @@ class UserRepository:
         stmt = select(UserModel).where(UserModel.cpf == cpf)
         result = self.__session.execute(stmt)
         return result.scalar_one_or_none()
+    
+    def get_paginated(
+        self, 
+        offset: int, 
+        limit: int, 
+        order_by: Optional[str] = None,
+        order_dir: str = "asc"
+    ) -> tuple[List[UserModel], int]:
+    
+        query = self.__session.query(UserModel)
+        
+        total = query.count()
+
+        if order_by is not None:
+            if hasattr(UserModel, order_by):
+                column = getattr(UserModel, order_by)
+                if order_dir.lower() == "desc":
+                    query = query.order_by(desc(column))
+                else:
+                    query = query.order_by(asc(column))
+        
+        users = query.offset(offset).limit(limit).all()
+        
+        return users, total
     
     def delete(self, user: UserModel) -> None:
         try:
