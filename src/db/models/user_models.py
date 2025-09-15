@@ -1,7 +1,6 @@
 from datetime import date, datetime
 from sqlalchemy import String, Date, DateTime, Table
 from sqlalchemy.orm import Mapped, registry, mapped_column
-from sqlalchemy.sql import func
 
 table_registry = registry()
 
@@ -18,8 +17,8 @@ class UserModel:
     cpf: Mapped[str] = mapped_column(String(11), nullable=False, unique=True)
 
     creat_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now(), nullable=False
+        DateTime(timezone=True), nullable=False
     )
     update_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False
+        DateTime(timezone=True), nullable=False
     )
