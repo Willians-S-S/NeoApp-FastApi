@@ -28,12 +28,7 @@ class UserService:
         if user_on_bd is not None:
             raise HTTPException(HTTPStatus.CONFLICT, conflict.CPF_ALREADY_IN_USE)
         
-        now = datetime.now(timezone.utc)
-        user_save = UserModel(
-            id=str(uuid4()), 
-            **user.model_dump(), 
-            creat_at=now,
-            update_at=now)
+        user_save = self.__to_UseModel(user)
         
         user_save = self.__repository.save(user_save)
 
@@ -64,10 +59,10 @@ class UserService:
             page=pagination.page,
             size=pagination.size
         )
-    
+        
     def __to_UseModel(self, user_create: UserCreate) -> UserModel:
         now = datetime.now(timezone.utc)
-        
+
         return UserModel(
             id=str(uuid4()), 
             **user_create.model_dump(), 
