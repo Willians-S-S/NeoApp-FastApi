@@ -22,7 +22,7 @@ class UserCreate(BaseModel):
         return cpf
 
 
-class UserRespose(BaseModel):
+class UserResponse(BaseModel):
     name: str
     birthday: date
     email: EmailStr
